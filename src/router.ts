@@ -2,8 +2,9 @@
 import { Router, Request, Response } from "express";
 
 import Logger from "../config/logger";
-import { createMovie } from "./controllers/movieController";
+import { createMovie, getMovieById } from "./controllers/movieController";
 import { validate } from "./middlewares/handleValidation";
+import { movieCreateAndUpdateValidation } from "./middlewares/movieValidator";
 
 const router = Router();
 
@@ -17,7 +18,8 @@ export default router
     res.status(200).send("API Working");
     Logger.info("Teste OK");
   })
-  .post("/movie", validate, createMovie);
+  .post("/movie", movieCreateAndUpdateValidation(), validate, createMovie)
+  .get("/movie/:id", getMovieById);
 
 /*
  * Inserimos nosso middleware de validação diretamente nas nossas requisições
