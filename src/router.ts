@@ -3,6 +3,7 @@ import { Router, Request, Response } from "express";
 
 import Logger from "../config/logger";
 import { createMovie } from "./controllers/movieController";
+import { validate } from "./middlewares/handleValidation";
 
 const router = Router();
 
@@ -16,4 +17,11 @@ export default router
     res.status(200).send("API Working");
     Logger.info("Teste OK");
   })
-  .post("/movie", createMovie);
+  .post("/movie", validate, createMovie);
+
+/*
+ * Inserimos nosso middleware de validação diretamente nas nossas requisições
+ * Não utilizamos ele no app.use() porquê não são todas as rotas que irão
+ * precisar dessa validação, estaríamos adicionando lógica desnecessária
+ * nessas rotas
+ */
