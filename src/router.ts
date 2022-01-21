@@ -2,7 +2,13 @@
 import { Router, Request, Response } from "express";
 
 import Logger from "../config/logger";
-import { createMovie, getMovieById } from "./controllers/movieController";
+import {
+  createMovie,
+  deleteMovieById,
+  getAllMovies,
+  getMovieById,
+  updateMovieById,
+} from "./controllers/movieController";
 import { validate } from "./middlewares/handleValidation";
 import { movieCreateAndUpdateValidation } from "./middlewares/movieValidator";
 
@@ -19,7 +25,15 @@ export default router
     Logger.info("Teste OK");
   })
   .post("/movie", movieCreateAndUpdateValidation(), validate, createMovie)
-  .get("/movie/:id", getMovieById);
+  .get("/movie/:id", getMovieById)
+  .get("/movie", getAllMovies)
+  .delete("/movie/:id", deleteMovieById)
+  .patch(
+    "/movie/:id",
+    movieCreateAndUpdateValidation(),
+    validate,
+    updateMovieById
+  );
 
 /*
  * Inserimos nosso middleware de validação diretamente nas nossas requisições
